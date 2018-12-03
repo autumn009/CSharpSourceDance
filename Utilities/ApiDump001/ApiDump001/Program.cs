@@ -6,7 +6,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        string tgtAssemblyName = "System.Runtime.dll";
+        string tgtAssemblyName = "System.Runtime";
         if( args.Length == 0)
         {
             // use default value
@@ -17,20 +17,25 @@ class Program
         }
         else
         {
-            Console.WriteLine("usage: ApiDump [AssemblyName]");
+            Console.WriteLine("usage: ApiDump [AssemblyName|-all]");
             return;
         }
         foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
         {
+            //Console.WriteLine(assembly.GetName().Name);
+            if (tgtAssemblyName != assembly.GetName().Name && tgtAssemblyName != "-all") continue;
+
             Console.WriteLine($"Assembly: {assembly.FullName}");
             foreach (var module in assembly.GetModules())
             {
                 Console.WriteLine($"Module: {module.Name}");
                 foreach (var type in module.GetTypes())
                 {
+                    var allTyps = type.GetMembers(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.GetField | BindingFlags.GetProperty | BindingFlags.SetField | BindingFlags.SetProperty);
+                    if (allTyps.Length == 0) continue;
                     Console.WriteLine($"Type: {type.FullName}");
                     string lastname = null;
-                    foreach (var member in type.GetMembers(BindingFlags.Instance|BindingFlags.Static|BindingFlags.Public|BindingFlags.DeclaredOnly|BindingFlags.GetField|BindingFlags.GetProperty|BindingFlags.SetField|BindingFlags.SetProperty))
+                    foreach (var member in allTyps)
                     {
                         if (lastname == member.Name) continue;
                         switch (member.MemberType)
