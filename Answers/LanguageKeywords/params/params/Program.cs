@@ -8,7 +8,7 @@ class Program
         Console.WriteLine($"sum is {array.Sum()}");
     }
 
-    static void Main(string[] args)
+    static void Main()
     {
         Sub(1, 2, 3);
         Sub(4, 5);
