@@ -1,4 +1,5 @@
 ﻿using System;
+using A;
 
 namespace A
 {
@@ -18,9 +19,9 @@ namespace B
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
-        A.TheClass.Sub();
+        TheClass.Sub();
         B.TheClass.Sub();
     }
 }
