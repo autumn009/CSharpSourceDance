@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "volatile", "volatile\volatile.csproj", "{98A9409A-5F65-415A-98BB-5DB2ADEBB71A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{98A9409A-5F65-415A-98BB-5DB2ADEBB71A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98A9409A-5F65-415A-98BB-5DB2ADEBB71A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98A9409A-5F65-415A-98BB-5DB2ADEBB71A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98A9409A-5F65-415A-98BB-5DB2ADEBB71A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {51364479-EE5C-4F4D-AEA2-92540DF98B80}
+	EndGlobalSection
+EndGlobal
