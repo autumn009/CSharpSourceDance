@@ -1,9 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Diagnostics;
+using System.Linq;
 
 class Program
 {
+    static Assembly GetAssemblyByName(string name)
+    {
+        var r =  AppDomain.CurrentDomain.GetAssemblies().
+               SingleOrDefault(assembly => assembly.GetName().Name == name);
+        if (r == null) Console.WriteLine($"Warning: {name} not found");
+        return r;
+    }
+
     static void Main(string[] args)
     {
         string tgtAssemblyName = "System.Runtime";
@@ -20,20 +30,39 @@ class Program
             Console.WriteLine("usage: ApiDump [AssemblyName|-all]");
             return;
         }
+        var assemblies = new List<Assembly>();
+
         foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
         {
             //Console.WriteLine(assembly.GetName().Name);
             if (tgtAssemblyName != assembly.GetName().Name && tgtAssemblyName != "-all") continue;
+            assemblies.Add(assembly);
+            assemblies.AddRange(assembly.GetReferencedAssemblies().Select(c => GetAssemblyByName(c.Name)).Where(c=>c!=null));
+        }
 
+        foreach (var assembly in assemblies)
+        {
             Console.WriteLine($"Assembly: {assembly.FullName}");
             foreach (var module in assembly.GetModules())
             {
+                var doneTypes = new Dictionary<string, int>();
                 Console.WriteLine($"Module: {module.Name}");
+                //Console.WriteLine($"DEBUG:{module.GetTypes().Length}");
+
                 foreach (var type in module.GetTypes())
                 {
-                    var allTyps = type.GetMembers(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.GetField | BindingFlags.GetProperty | BindingFlags.SetField | BindingFlags.SetProperty);
+                    var allTyps = type.GetMembers(BindingFlags.Instance 
+                        | BindingFlags.Static | BindingFlags.Public 
+                        | BindingFlags.GetField | BindingFlags.GetProperty | BindingFlags.SetField 
+                        | BindingFlags.SetProperty);
                     if (allTyps.Length == 0) continue;
-                    Console.WriteLine($"Type: {type.FullName}");
+                    var name = type.FullName;
+                    var index = name.IndexOf('`');
+                    if (index >= 0) name = name.Substring(0, index);
+                    if (doneTypes.ContainsKey(name)) continue;
+                    doneTypes.Add(name, 1);
+                    Console.WriteLine($"Type: {name}");
+#if false
                     string lastname = null;
                     foreach (var member in allTyps)
                     {
@@ -57,6 +86,7 @@ class Program
                         }
                         lastname = member.Name;
                     }
+#endif
                 }
             }
             Console.WriteLine();
