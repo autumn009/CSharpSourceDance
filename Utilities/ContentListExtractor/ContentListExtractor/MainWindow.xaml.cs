@@ -68,7 +68,8 @@ namespace ContentListExtractor
 
         private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
-            await Task.Run(async ()=>
+            var path = DstPath.Text;
+            await Task.Run(async () =>
             {
                 await this.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(
                         () =>
@@ -78,10 +79,14 @@ namespace ContentListExtractor
                     );
                 try
                 {
-                    await Task.Delay(1000);
+                    using (var outputWriter = System.IO.File.CreateText(path))
+                    {
+                        await Task.Delay(1000);
 
 
 
+                        outputWriter.WriteLine($"# created {DateTimeOffset.Now}");
+                    }
                 }
                 finally
                 {
@@ -93,6 +98,7 @@ namespace ContentListExtractor
                     );
                 }
             });
+            System.Diagnostics.Process.Start(DstPath.Text);
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
