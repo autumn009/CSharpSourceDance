@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml.Packaging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -66,9 +67,34 @@ namespace ContentListExtractor
             }
         }
 
+
+        private System.IO.TextWriter writer;
+        private string val = null;
+
+        private void enumsub(DocumentFormat.OpenXml.OpenXmlElement root)
+        {
+            foreach (var item in root.ChildElements)
+            {
+                if (item.LocalName == "p")
+                {
+                    val = null;
+                    enumsub(item);
+                    if (val == "2") writer.WriteLine(item.InnerText);
+                    continue;
+                }
+                else if (item.LocalName == "pStyle")
+                {
+                    val = item.GetAttribute("val", "http://schemas.openxmlformats.org/wordprocessingml/2006/main").Value;
+                }
+                //writer.WriteLine(item.OuterXml);
+                enumsub(item);
+            }
+        }
+
         private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
             var path = DstPath.Text;
+            var spath = SrcPath.Text;
             await Task.Run(async () =>
             {
                 await this.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(
@@ -81,11 +107,17 @@ namespace ContentListExtractor
                 {
                     using (var outputWriter = System.IO.File.CreateText(path))
                     {
+                        writer = outputWriter;
                         await Task.Delay(1000);
-
-
-
+                        using (WordprocessingDocument wordDocument =
+    WordprocessingDocument.Open(spath, false))
+                        {
+                            // Assign a reference to the existing document body.
+                            DocumentFormat.OpenXml.Wordprocessing.Body body = wordDocument.MainDocumentPart.Document.Body;
+                            enumsub(body);
+                        }
                         outputWriter.WriteLine($"# created {DateTimeOffset.Now}");
+                        writer = null;
                     }
                 }
                 finally
