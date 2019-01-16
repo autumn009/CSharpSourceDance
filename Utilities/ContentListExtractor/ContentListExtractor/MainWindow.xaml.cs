@@ -49,7 +49,21 @@ namespace ContentListExtractor
 
         private void DstButton_Click(object sender, RoutedEventArgs e)
         {
-
+            var fileDialog = new System.Windows.Forms.SaveFileDialog();
+            fileDialog.InitialDirectory = System.IO.Path.GetDirectoryName(DstPath.Text);
+            fileDialog.FileName = System.IO.Path.GetFileName(DstPath.Text);
+            var result = fileDialog.ShowDialog();
+            switch (result)
+            {
+                case System.Windows.Forms.DialogResult.OK:
+                    var file = fileDialog.FileName;
+                    DstPath.Text = file;
+                    DstPath.ToolTip = file;
+                    break;
+                case System.Windows.Forms.DialogResult.Cancel:
+                default:
+                    break;
+            }
         }
 
         private void StartButton_Click(object sender, RoutedEventArgs e)
