@@ -17,6 +17,8 @@
             <Button Content="..." x:Name="DstButton" Click="DstButton_Click"></Button>
             <Button Content="Start" x:Name="StartButton" Margin="00,10,0,10" Click="StartButton_Click" IsEnabled="false"></Button>
             <Button Content="Close" x:Name="CloseButton" Click="CloseButton_Click"></Button>
+            <ProgressBar Height="10" IsIndeterminate="True" Visibility="Hidden" x:Name="MyProgressBar"/>
+
         </StackPanel>
     </Grid>
 </Window>

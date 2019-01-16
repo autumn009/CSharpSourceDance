@@ -66,9 +66,33 @@ namespace ContentListExtractor
             }
         }
 
-        private void StartButton_Click(object sender, RoutedEventArgs e)
+        private async void StartButton_Click(object sender, RoutedEventArgs e)
         {
+            await Task.Run(async ()=>
+            {
+                await this.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(
+                        () =>
+                        {
+                            MyProgressBar.Visibility = Visibility.Visible;
+                        })
+                    );
+                try
+                {
+                    await Task.Delay(1000);
 
+
+
+                }
+                finally
+                {
+                    await this.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal, new Action(
+                        () =>
+                        {
+                            MyProgressBar.Visibility = Visibility.Hidden;
+                        })
+                    );
+                }
+            });
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
