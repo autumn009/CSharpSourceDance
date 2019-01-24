@@ -13,7 +13,7 @@
             <TextBox x:Name="SrcPath" Text="C:\Users\autumn.PDTOKYO4\OneDrive\SelfShare\0pub\C#SRC\cssrc000.docx"></TextBox>
             <Button Content="..." x:Name="SrcButton" Click="SrcButton_Click"></Button>
             <TextBlock>Destination:</TextBlock>
-            <TextBox x:Name="DstPath" Text="C:\Users\autumn.PDTOKYO4\OneDrive\SelfShare\0pub\C#SRC\clist.txt"></TextBox>
+            <TextBox x:Name="DstPath" Text="C:\xgh\ChallengesAndResults\ChallengesAndResults\ChallengesAndResults\clistdance.txt"></TextBox>
             <Button Content="..." x:Name="DstButton" Click="DstButton_Click"></Button>
             <Button Content="Start" x:Name="StartButton" Margin="00,10,0,10" Click="StartButton_Click" IsEnabled="false"></Button>
             <Button Content="Close" x:Name="CloseButton" Click="CloseButton_Click"></Button>
